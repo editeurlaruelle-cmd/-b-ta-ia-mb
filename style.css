@@ -11,7 +11,39 @@
     --user-msg-bg: #2b2c2f;
     --modal-bg: #1e1f20;
 }
+/* --- Barre latérale --- */
+#sidebar {
+    width: 260px;
+    background-color: var(--sidebar-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 12px;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    border-right: 1px solid var(--border-color);
+    z-index: 10;
+    flex-shrink: 0;
+    height: 100vh;
+    position: relative;
+}
 
+/* Par défaut sur mobile, on la cache avec une translation ou margin */
+@media (max-width: 768px) {
+    #sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100vh;
+        z-index: 100;
+        transform: translateX(-100%);
+        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    /* Quand le JS ajoute la classe 'open', la sidebar s'affiche */
+    #sidebar.open {
+        transform: translateX(0);
+    }
+}
 /* --- Animations Clés --- */
 @keyframes fadeInSlide {
     from {

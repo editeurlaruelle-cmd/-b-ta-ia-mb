@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Veyros AI Mobile</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+    <aside id="sidebar">
+        <div class="sidebar-top">
+            <button class="menu-btn" id="closeSidebar" title="Fermer le menu">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <button class="new-chat-btn">
+                <span class="material-symbols-outlined">add</span>
+                <span>Nouvelle discussion</span>
+            </button>
+        </div>
+        <div class="recent-chats"></div>
+        <div class="sidebar-bottom">
+            <div class="chat-item" id="reportBugBtn">
+                <span class="material-symbols-outlined">bug_report</span> Signaler un bug
+            </div>
+            <div class="chat-item" id="settingsBtn">
+                <span class="material-symbols-outlined">settings</span> Paramètres
+            </div>
+        </div>
+    </aside>
+
+    <div class="main-container">
+        <header>
+            <button class="menu-btn" id="toggleSidebar" title="Ouvrir le menu">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+            <div class="logo">Veyros AI</div>
+            <div class="user-avatar" title="Profil utilisateur">V</div>
+        </header>
+
+        <div class="chat-container" id="chatContainer">
+            <div class="welcome-section" id="welcomeSection">
+                <h1>Bonjour</h1>
+                <h2>Comment puis-je t'aider ?</h2>
+            </div>
+        </div>
+
+        <div class="input-container">
+            <div id="filePreviewContainer" class="file-preview-container" style="display: none;">
+                <span class="material-symbols-outlined">attachment</span>
+                <span id="fileNameDisplay"></span>
+                <button id="removeFileBtn" title="Supprimer le fichier">
+                    <span class="material-symbols-outlined" style="font-size: 16px;">close</span>
+                </button>
+            </div>
+
+            <div class="input-box">
+                <input type="file" id="fileInput" style="display: none;" />
+                <button class="action-icon-btn" id="uploadBtn" title="Ajouter un fichier">
+                    <span class="material-symbols-outlined">add_circle</span>
+                </button>
+                <textarea id="userInput" placeholder="Message à Veyros AI..." rows="1"></textarea>
+                <div class="input-actions">
+                    <button class="action-icon-btn" title="Micro">
+                        <span class="material-symbols-outlined">mic</span>
+                    </button>
+                    <button class="send-btn" id="sendBtn" disabled title="Envoyer">
+                        <span class="material-symbols-outlined" style="font-size: 18px;">arrow_upward</span>
+                    </button>
+                </div>
+            </div>
+            <div class="disclaimer">
+                Veyros AI peut commettre des erreurs.
+            </div>
+        </div>
+    </div>
+
+    <div id="settingsModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Paramètres & Crédits</h2>
+                <button class="close-modal-btn" id="closeModalBtn">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="credit-section">
+                    <h3>Crédits</h3>
+                    <p><strong>Créateur :</strong> Roméo</p>
+                    <p><strong>Cocréateur :</strong> Voltek</p>
+                    <p><strong>Développeur API :</strong> Voltek</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js" defer></script>
+</body>
+</html>

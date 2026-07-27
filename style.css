@@ -62,8 +62,27 @@ body {
     overflow: hidden;
 }
 
+/* --- Overlay Sidebar (Mobile) --- */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.sidebar-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
 /* --- Barre latérale --- */
-#sidebar, .sidebar, aside {
+#sidebar {
     width: 260px;
     background-color: var(--sidebar-color);
     display: flex;
@@ -74,11 +93,12 @@ body {
     border-right: 1px solid var(--border-color);
     z-index: 10;
     flex-shrink: 0;
+    height: 100vh;
+    position: relative;
 }
 
-#sidebar.collapsed, .sidebar.collapsed, aside.collapsed {
+#sidebar.collapsed {
     margin-left: -260px;
-    opacity: 0.5;
 }
 
 .sidebar-top {
@@ -119,13 +139,13 @@ body {
     cursor: pointer;
     font-size: 14px;
     font-weight: 500;
-    width: fit-content;
+    width: 100%;
     transition: all 0.25s ease;
 }
 
 .new-chat-btn:hover {
     background-color: #3b3d40;
-    transform: scale(1.03);
+    transform: scale(1.02);
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
@@ -136,6 +156,7 @@ body {
     overflow-y: auto;
     flex: 1;
     margin-top: 10px;
+    min-height: 0;
 }
 
 .chat-item {
@@ -148,6 +169,9 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
     transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .chat-item:hover {
@@ -513,4 +537,20 @@ header {
 
 ::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.4);
+}
+
+/* --- Responsive Mobile / Petits Écrans --- */
+@media (max-width: 768px) {
+    #sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100vh;
+        z-index: 100;
+    }
+    
+    #sidebar.collapsed {
+        transform: translateX(-100%);
+        margin-left: 0;
+    }
 }

@@ -16,7 +16,7 @@
 @keyframes fadeInSlide {
     from {
         opacity: 0;
-        transform: translateY(12px);
+        transform: translateY(15px);
     }
     to {
         opacity: 1;
@@ -24,10 +24,10 @@
     }
 }
 
-@keyframes modalPop {
+@keyframes modalPopup {
     from {
         opacity: 0;
-        transform: scale(0.9) translateY(10px);
+        transform: scale(0.85) translateY(20px);
     }
     to {
         opacity: 1;
@@ -67,7 +67,7 @@ body {
     flex-direction: column;
     justify-content: space-between;
     padding: 16px;
-    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); /* Animation fluide de type "spring" */
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     border-right: 1px solid var(--border-color);
     z-index: 1000;
 }
@@ -84,7 +84,7 @@ body {
     width: 100vw;
     height: 100vh;
     background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(3px);
+    backdrop-filter: blur(4px);
     z-index: 999;
     opacity: 0;
     pointer-events: none;
@@ -114,12 +114,12 @@ body {
     justify-content: center;
     width: 36px;
     height: 36px;
-    transition: background-color 0.2s, transform 0.15s;
+    transition: background-color 0.2s, transform 0.15s ease;
 }
 
-/* Effet de clic (pression tactile) sur les boutons */
+/* Effet tactile de pression sur les boutons */
 button:active {
-    transform: scale(0.92);
+    transform: scale(0.9);
 }
 
 .new-chat-btn {
@@ -134,11 +134,11 @@ button:active {
     font-size: 14px;
     font-weight: 500;
     width: 100%;
-    transition: background-color 0.2s, transform 0.15s;
+    transition: background-color 0.2s, transform 0.15s ease;
 }
 
 .new-chat-btn:active {
-    transform: scale(0.97);
+    transform: scale(0.96);
 }
 
 .recent-chats {
@@ -228,7 +228,7 @@ header {
     flex-direction: column;
     gap: 6px;
     padding: 0 8px;
-    animation: fadeInSlide 0.5s ease-out;
+    animation: fadeInSlide 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .welcome-section h1, .welcome-section h2 {
@@ -247,7 +247,7 @@ header {
     color: var(--text-secondary);
 }
 
-/* Animation d'apparition des messages dans le chat */
+/* Animation d'apparition des messages (glissement vers le haut) */
 .message {
     display: flex;
     gap: 10px;
@@ -255,7 +255,7 @@ header {
     line-height: 1.5;
     font-size: 14px;
     word-break: break-word;
-    animation: fadeInSlide 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: fadeInSlide 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .message.user {
@@ -293,7 +293,7 @@ header {
     width: fit-content;
     font-size: 12px;
     color: var(--text-secondary);
-    animation: fadeInSlide 0.2s ease-out;
+    animation: fadeInSlide 0.25s ease-out;
 }
 
 .input-box {
@@ -304,11 +304,11 @@ header {
     align-items: center;
     gap: 8px;
     border: 1px solid var(--border-color);
-    transition: border-color 0.2s;
+    transition: border-color 0.25s ease;
 }
 
 .input-box:focus-within {
-    border-color: rgba(66, 133, 244, 0.5);
+    border-color: rgba(66, 133, 244, 0.6);
 }
 
 .input-box textarea {
@@ -339,11 +339,11 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: opacity 0.2s, transform 0.15s;
+    transition: opacity 0.2s, transform 0.15s ease;
 }
 
 .send-btn:active {
-    transform: scale(0.9);
+    transform: scale(0.85);
 }
 
 .send-btn:disabled {
@@ -356,7 +356,7 @@ header {
     text-align: center;
 }
 
-/* --- Modale Mobile avec Animation d'apparition --- */
+/* --- Modale Paramètres avec Animation Pop-up --- */
 .modal {
     position: fixed;
     top: 0;
@@ -369,21 +369,21 @@ header {
     justify-content: center;
     z-index: 2000;
     padding: 16px;
-    backdrop-filter: blur(4px);
-    transition: opacity 0.25s ease;
+    backdrop-filter: blur(5px);
+    transition: opacity 0.3s ease;
 }
 
 .modal-content {
     background-color: var(--modal-bg);
     border: 1px solid var(--border-color);
-    border-radius: 16px;
+    border-radius: 18px;
     width: 100%;
     max-width: 340px;
     padding: 20px;
     display: flex;
     flex-direction: column;
     gap: 16px;
-    animation: modalPop 0.3s cubic-bezier(0.16, 1, 0.3, 1); /* Animation de zoom fluide type pop-up */
+    animation: modalPopup 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .modal-header {

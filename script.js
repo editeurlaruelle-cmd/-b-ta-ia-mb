@@ -4,33 +4,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatContainer = document.getElementById('chatContainer');
     const welcomeSection = document.getElementById('welcomeSection');
     const toggleSidebarBtn = document.getElementById('toggleSidebar');
-    const closeSidebarBtn = document.getElementById('closeSidebar');
     const sidebar = document.getElementById('sidebar');
     const sidebarOverlay = document.getElementById('sidebarOverlay');
     const newChatBtn = document.querySelector('.new-chat-btn');
     const reportBugBtn = document.getElementById('reportBugBtn');
     
-    // Éléments de la modale Paramètres
     const settingsBtn = document.getElementById('settingsBtn');
     const settingsModal = document.getElementById('settingsModal');
     const closeModalBtn = document.getElementById('closeModalBtn');
 
-    // URL de ton serveur Flask / Ngrok
     const API_URL = 'https://unsupercilious-carma-unsymbolized.ngrok-free.dev/';
 
-    // --- 1. Gestion de la zone de texte et du bouton d'envoi ---
     userInput.addEventListener('input', () => {
         if (userInput.value.trim() !== "") {
             sendBtn.removeAttribute('disabled');
         } else {
             sendBtn.setAttribute('disabled', 'true');
         }
-
         userInput.style.height = 'auto';
         userInput.style.height = (userInput.scrollHeight) + 'px';
     });
 
-    // --- 2. Fonction principale d'envoi de message ---
     async function sendMessage() {
         const text = userInput.value.trim();
         if (text === "") return;
@@ -39,18 +33,14 @@ document.addEventListener('DOMContentLoaded', () => {
             welcomeSection.style.display = 'none';
         }
 
-        // Afficher le message de l'utilisateur
         appendMessage(text, 'user');
-
         userInput.value = "";
         userInput.style.height = 'auto';
         sendBtn.setAttribute('disabled', 'true');
 
-        // Appeler l'API
         await callVeyrosAPI(text);
     }
 
-    // --- 3. Ajouter un message dans le conteneur de chat ---
     function appendMessage(text, sender) {
         const messageDiv = document.createElement('div');
         messageDiv.classList.add('message', sender);
@@ -66,9 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return messageDiv.querySelector('.ai-content') || messageDiv;
     }
 
-    // --- 3.1 Formatage de la réponse (Blocs de code, Gras, Listes) ---
     function formaterReponse(texte) {
-        // Blocs de code
         let html = texte.replace(/```([a-zA-Z]*)\n([\s\S]*?)```/g, (match, lang, code) => {
             const escapedCode = code.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
             const codeId = 'code_' + Math.random().toString(36).substr(2, 9);
@@ -81,21 +69,15 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>`;
         });
 
-        // Texte en gras
         html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-
-        // Puces et listes
         html = html.replace(/^[•\-]\s+(.*)$/gm, '<li>$1</li>');
         html = html.replace(/(<li>[\s\S]*?<\/li>)/g, '<ul style="margin: 5px 0 5px 20px; padding-left: 0;">$1</ul>');
         html = html.replace(/<\/ul>\s*<ul[^>]*>/g, '');
-
-        // Retours à la ligne
         html = html.replace(/\n/g, '<br>');
 
         return html;
     }
 
-    // --- 4. Appel de l'API Flask (Support JSON + Streaming) ---
     async function callVeyrosAPI(promptText) {
         const aiContentDiv = appendMessage('...', 'ai');
         let texteComplet = "";
@@ -103,29 +85,22 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const response = await fetch(API_URL, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ prompt: promptText })
             });
 
             const contentType = response.headers.get("content-type");
-
             if (!response.ok) {
                 const errText = await response.text();
                 throw new Error(`Erreur HTTP ${response.status}: ${errText}`);
             }
 
-            // Cas JSON simple
             if (contentType && contentType.includes("application/json")) {
                 const data = await response.json();
                 aiContentDiv.innerHTML = formaterReponse(data.response || data.error || "Réponse vide");
-            } 
-            // Cas Streaming NDJSON
-            else if (contentType && (contentType.includes("ndjson") || contentType.includes("stream"))) {
+            } else if (contentType && (contentType.includes("ndjson") || contentType.includes("stream"))) {
                 const reader = response.body.getReader();
                 const decoder = new TextDecoder();
-                
                 aiContentDiv.innerHTML = "";
 
                 while (true) {
@@ -144,9 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                     aiContentDiv.innerHTML = formaterReponse(texteComplet);
                                     scrollToBottom();
                                 }
-                            } catch (e) {
-                                // Ignore les lignes partielles
-                            }
+                            } catch (e) {}
                         }
                     }
                 }
@@ -154,13 +127,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 const rawText = await response.text();
                 aiContentDiv.innerHTML = formaterReponse(rawText);
             }
-
         } catch (error) {
             aiContentDiv.innerHTML = `⚠️ Erreur de connexion avec l'API : ${error.message}.`;
         }
     }
 
-    // --- 5. Fonction globale pour copier le code ---
     window.copierCode = function(id) {
         const codeEl = document.getElementById(id);
         if (codeEl) {
@@ -170,12 +141,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // --- 6. Faire défiler le chat vers le bas ---
     function scrollToBottom() {
         chatContainer.scrollTop = chatContainer.scrollHeight;
     }
 
-    // --- 7. Événements clavier et souris ---
     sendBtn.addEventListener('click', sendMessage);
 
     userInput.addEventListener('keydown', (e) => {
@@ -185,7 +154,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- 8. Gestion du menu tiroir (Slide-over mobile) ---
     function openMenu() {
         if (sidebar && sidebarOverlay) {
             sidebar.classList.add('open');
@@ -201,29 +169,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (toggleSidebarBtn) toggleSidebarBtn.addEventListener('click', openMenu);
-    if (closeSidebarBtn) closeSidebarBtn.addEventListener('click', closeMenu);
     if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeMenu);
 
-    // --- 9. Bouton Nouvelle discussion ---
     if (newChatBtn) {
         newChatBtn.addEventListener('click', () => {
-            closeMenu(); // Ferme le menu mobile si ouvert
-            const messages = chatContainer.querySelectorAll('.message');
-            messages.forEach(msg => msg.remove());
-            
-            if (welcomeSection) {
-                welcomeSection.style.display = 'flex';
-            }
+            closeMenu();
+            chatContainer.querySelectorAll('.message').forEach(msg => msg.remove());
+            if (welcomeSection) welcomeSection.style.display = 'flex';
             userInput.value = "";
             userInput.style.height = 'auto';
             sendBtn.setAttribute('disabled', 'true');
         });
     }
 
-    // --- 10. Gestion du signalement de bug ---
     if (reportBugBtn) {
         reportBugBtn.addEventListener('click', async () => {
-            closeMenu(); // Ferme le menu mobile
+            closeMenu();
             const bugDescription = prompt("Décris le bug rencontré :");
             if (!bugDescription) return;
 
@@ -250,10 +211,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- 11. Gestion de la modale Paramètres ---
     if (settingsBtn && settingsModal) {
         settingsBtn.addEventListener('click', () => {
-            closeMenu(); // Ferme le tiroir mobile
+            closeMenu();
             settingsModal.style.display = 'flex';
         });
     }
